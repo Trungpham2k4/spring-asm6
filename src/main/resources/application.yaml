@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ASM6
+  datasource:
+    url: jdbc:postgresql://localhost:5432/assignment
+    username: postgres
+    password: trung@123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  web.resources:
+    static-locations: file:src/main/resources/static/
+
+admin:
+  username: ${INSTRUCTOR_NAME}
+  password: ${INSTRUCTOR_PASSWORD}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmxc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
+    <h5 class="text-white fw-bold m-0">CourseShare</h5>
+    <div class="nav text-gray">
+        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
+        <a class="nav-link" th:href="@{/course/manage-course}">Manage Courses</a>
+        <a class="nav-link" th:href="@{/review/management}">Reviews</a>
+        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
+            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<main class="container p-3">
+    <div class="bg-white w-100 p-3">
+        <div class="d-flex justify-content-between">
+            <h2>Manage Courses</h2>
+            <a class="btn btn-primary px-2 m-0 align-content-center" th:href="@{/course/add}">+ Create New Course</a>
+        </div>
+        <table class="table table-responsive table-bordered table-striped mt-3">
+            <thead>
+            <tr class="table-dark text-white">
+                <th>Title</th>
+                <th>Status</th>
+                <th>Categories</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody th:each="course : ${courses}">
+            <tr>
+                <td th:text="*{course.title}"></td>
+                <td th:text="*{course.status}"></td>
+                <td th:text="*{course.category}"></td>
+                <td class="d-flex gap-2">
+                    <a class="btn btn-sm btn-primary" th:href="@{/course/edit/{id}(id=${course.id})}">Edit</a>
+                    <form th:action="@{/course/delete/{id}(id=${course.id})}" th:method="delete" style="display: inline">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Do you want to delete?')">Delete</button>
+                    </form>
+                    <!-- Nếu status == 1 thì render form này -->
+                    <form th:if="${course.status.equals('Draft') || course.status.equals('Archived')}" th:action="@{/course/{id}/status/2(id=${course.id})}" th:method="patch" style="display: inline">
+                        <button type="submit" class="btn btn-sm btn-success">Publish</button>
+                    </form>
+                    <!-- Nếu status == 2 thì render form này -->
+                    <form th:if="${course.status.equals('Published')}" th:action="@{/course/{id}/status/1(id=${course.id})}" th:method="patch" style="display: inline">
+                        <button type="submit" class="btn btn-sm btn-warning">Unpublish</button>
+                    </form>
+                    <form th:action="@{/course/{id}/status/3(id=${course.id})}" th:method="patch" style="display: inline">
+                        <button type="submit" class="btn btn-sm btn-secondary">Archive</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <nav th:if="${courses.totalPages > 1}">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/course/manage-course(page=${currentPage - 1})}">Previous</a>
+                </li>
+
+                <!-- Vòng lặp in ra các số trang (1, 2, 3...) -->
+                <!-- #numbers.sequence(1, totalPages) tạo ra một mảng từ 1 đến tổng số trang -->
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(1, courses.totalPages)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+
+                    <a class="page-link" th:href="@{/course/manage-course(page=${i})}" th:text="${i}">1</a>
+                </li>
+
+                <!-- Nút "Trang sau" (Next) -->
+                <!-- Thêm class 'disabled' nếu đang ở trang cuối cùng -->
+                <li class="page-item" th:classappend="${currentPage == courses.totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/course/manage-course(page=${currentPage + 1})}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
+</body>
+</html>

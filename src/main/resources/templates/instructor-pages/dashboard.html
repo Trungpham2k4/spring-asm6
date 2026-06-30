@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmxc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
+    <h5 class="text-white fw-bold m-0">CourseShare</h5>
+    <div class="nav text-gray">
+        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
+        <a class="nav-link" th:href="@{/course/manage-course}">Manage Courses</a>
+        <a class="nav-link" th:href="@{/review/management}">Reviews</a>
+        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
+            <!-- Dùng onsubmit để xóa sạch các dữ liệu rác (nếu có) trên trình duyệt -->
+            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<main class="container p-3">
+    <h2>Dashboard Overview</h2>
+    <div class="grid mb-5">
+        <div class="row g-3">
+            <div class="col-3">
+                <div class="bg-white rounded shadow-sm p-4 d-flex flex-column align-items-center justify-content-center">
+                    <h2 class="text-primary" th:text="${dashboardInfo.numberOfCourses}"></h2>
+                    <p>Total Courses</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="bg-white rounded shadow-sm p-4 d-flex flex-column align-items-center justify-content-center">
+                    <h2 class="text-primary" th:text="${dashboardInfo.numberOfPublishedCourses}"></h2>
+                    <p>Published Courses</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="bg-white rounded shadow-sm p-4 d-flex flex-column align-items-center justify-content-center">
+                    <h2 class="text-primary" th:text="${dashboardInfo.numberOfPendingReviews}"></h2>
+                    <p>Pending Reviews</p>
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="bg-white rounded shadow-sm p-4 d-flex flex-column align-items-center justify-content-center">
+                    <h2 class="text-primary" th:text="${dashboardInfo.numberOfCategories}"></h2>
+                    <p>Total Categories</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 class="mb-3">Quick Actions</h2>
+    <div class="grid">
+        <div class="row g-3">
+            <div class="col-4">
+                <a th:href="@{/course/add}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                    Create New Course
+                </a>
+            </div>
+            <div class="col-4">
+                <a th:href="@{/course/manage-course}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                    Manage Courses
+                </a>
+            </div>
+            <div class="col-4">
+                <a th:href="@{/review/management}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                    Pending Reviews
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

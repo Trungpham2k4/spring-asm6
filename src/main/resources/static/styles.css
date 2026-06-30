@@ -1,0 +1,22 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    min-height: 100vh;
+    background-color: #eef6f5;
+}
+
+.container{
+    min-height: 90vh;
+}
+.course-card, .other-card{
+    min-height: 100px;
+    min-width: 100%;
+    background-color: #fff;
+}
+
+.nav-link{
+    color: #fff;
+}
