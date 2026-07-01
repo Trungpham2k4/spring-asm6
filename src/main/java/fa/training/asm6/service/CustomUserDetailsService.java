@@ -3,6 +3,7 @@ package fa.training.asm6.service;
 import fa.training.asm6.entity.Instructor;
 import fa.training.asm6.repository.InstructorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -24,6 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (instructor == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+        log.info("User found: {}", instructor.getUsername());
         return new User(
                 instructor.getUsername(),
                 instructor.getPassword(),

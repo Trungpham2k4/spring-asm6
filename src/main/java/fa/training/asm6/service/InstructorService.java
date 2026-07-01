@@ -7,8 +7,10 @@ import fa.training.asm6.repository.CourseRepository;
 import fa.training.asm6.repository.InstructorRepository;
 import fa.training.asm6.repository.ReviewRepository;
 import fa.training.asm6.service.base.GenericServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class InstructorService extends GenericServiceImpl<Instructor, Integer> {
 
@@ -28,6 +30,8 @@ public class InstructorService extends GenericServiceImpl<Instructor, Integer> {
         int totalPublishedCourses = courseRepository.findPublishedCourses().size();
         int totalCategories = (int) categoryRepository.count();
         int totalPendingReviews = reviewRepository.countReviewByStatus(1);
+        log.info("Instructor Dashboard Info: totalCourses={}, totalPublishedCourses={}, totalPendingReviews={}, totalCategories={}",
+                totalCourses, totalPublishedCourses, totalPendingReviews, totalCategories);
         return new InstructorDashboardResponse(totalCourses, totalPublishedCourses, totalPendingReviews, totalCategories);
     }
 }

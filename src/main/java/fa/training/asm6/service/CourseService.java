@@ -7,6 +7,7 @@ import fa.training.asm6.entity.Course;
 import fa.training.asm6.repository.CategoryRepository;
 import fa.training.asm6.repository.CourseRepository;
 import fa.training.asm6.service.base.GenericServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class CourseService extends GenericServiceImpl<Course, Integer> {
 
@@ -67,6 +69,7 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
                 .status(courseRequest.getStatus())
                 .build();
         repository.save(course);
+        log.info("Saved new course with title: {}", course.getTitle());
 
         Set<String> requestCategories = parseCategories(courseRequest.getCategory());
         if (requestCategories.isEmpty()) return;
@@ -89,8 +92,11 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
                 existingCategories.add(newCategory);
             }
         });
-
         categoryRepository.saveAll(existingCategories);
+        log.info("Saving categories for course '{}': {}", course.getTitle(),
+                existingCategories.stream()
+                        .map(c -> c.getName() + " (freq: " + c.getFrequency() + ")")
+                        .collect(Collectors.joining(", ")));
     }
 
     @Transactional
@@ -102,6 +108,7 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
         course.setCategory(courseRequest.getCategory());
         course.setStatus(courseRequest.getStatus());
         repository.save(course);
+        log.info("Updated course with id {} and title: {}", course.getId(), course.getTitle());
 
         Set<String> newCategories = parseCategories(courseRequest.getCategory());
         Set<String> oldCategories = parseCategories(courseRequest.getOldCategory());
@@ -123,6 +130,10 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
         List<Category> categoriesToDelete = new ArrayList<>();
         List<Category> categoriesToSave = new ArrayList<>();
 
+        log.info("Updating categories for course '{}'. To add: {}, To remove: {}",
+                course.getTitle(),
+                String.join(", ", categoriesToAdd),
+                String.join(", ", categoriesToRemove));
         affectedCategories.forEach(category -> {
             if (categoriesToAdd.contains(category.getName())) {
                 category.setFrequency(category.getFrequency() + 1);
@@ -151,9 +162,11 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
 
         // Tách bạch rõ ràng quá trình Delete và Save để tránh lỗi Hibernate
         if (!categoriesToDelete.isEmpty()) {
+            log.info("Number of categories to be deleted: {}", categoriesToDelete.size());
             categoryRepository.deleteAll(categoriesToDelete);
         }
         if (!categoriesToSave.isEmpty()) {
+            log.info("Number of categories to be saved: {}", categoriesToSave.size());
             categoryRepository.saveAll(categoriesToSave);
         }
     }
@@ -178,13 +191,15 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
             });
 
             if (!categoriesToDelete.isEmpty()) {
+                log.info("Deleting categories: {}", categoriesToDelete.stream().map(Category::getName).collect(Collectors.joining(", ")));
                 categoryRepository.deleteAll(categoriesToDelete);
             }
             if (!categoriesToUpdate.isEmpty()) {
+                log.info("Updating categories: {}", categoriesToUpdate.stream().map(c -> c.getName() + " (new freq: " + c.getFrequency() + ")").collect(Collectors.joining(", ")));
                 categoryRepository.saveAll(categoriesToUpdate);
             }
         }
-
+        log.info("Deleting course with id {} and its associated categories", id);
         repository.delete(course);
     }
 
@@ -204,5 +219,6 @@ public class CourseService extends GenericServiceImpl<Course, Integer> {
         Course course = findById(id);
         course.setStatus(status);
         repository.save(course);
+        log.info("Updated status of course with id {} to {}", id, status);
     }
 }
