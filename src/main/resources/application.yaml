@@ -23,7 +23,15 @@ spring:
     prefix: file:src/main/resources/templates/
   web.resources:
     static-locations: file:src/main/resources/static/
+  security:
+    filter:
+      dispatcher-types: async, error, forward, include, request
 
 admin:
   username: ${INSTRUCTOR_NAME}
   password: ${INSTRUCTOR_PASSWORD}
+
+logging:
+  level:
+    org.springframework.security : TRACE
+    org.springframework.web: TRACE

@@ -1,5 +1,7 @@
 package fa.training.asm6.configuration;
 
+import jakarta.servlet.DispatcherType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +20,9 @@ public class SecurityConfig {
             "/categories/**", "/instructor/login", "/reviews/**", "/courses/**", "/webjars/**"
     };
 
+    @Autowired
+    private CustomLoginFailureHandler customLoginFailureHandler;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
@@ -26,6 +31,7 @@ public class SecurityConfig {
         );
         http.formLogin(form -> form
                 .loginPage("/instructor/login")
+                .failureHandler(customLoginFailureHandler)
                 .defaultSuccessUrl("/instructor/dashboard", true)
                 .permitAll()
         );

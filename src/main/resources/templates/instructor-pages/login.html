@@ -15,9 +15,9 @@
 
     <div class="w-50 h-50 bg-white rounded p-3 shadow-lg">
         <h2 class="text-center">Instructor Login</h2>
-        <form th:action="@{/instructor/login}" method="post">
-            <div th:if="${param.error}" class="alert alert-danger" role="alert">
-                Invalid username or password.
+        <form th:action="@{/instructor/login}" method="post" th:object="${instructor}" novalidate>
+            <div th:if="${loginError != null}" class="alert alert-danger" role="alert">
+                <span th:text="${loginError}"></span>
             </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -25,7 +25,7 @@
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                <input type="password" class="form-control" id="password" name="password" laceholder="Enter password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>

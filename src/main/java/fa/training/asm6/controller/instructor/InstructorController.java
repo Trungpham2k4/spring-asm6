@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/instructor")
@@ -23,8 +24,18 @@ public class InstructorController {
      * @return
      */
     @GetMapping("/login")
-    public String login(Model model) {
-        model.addAttribute("instructor", new InstructorRequest());
+    public String login(@RequestParam(name = "error", required = false) String error,
+                        @RequestParam(name = "user", required = false) String username,
+                        Model model) {
+        InstructorRequest request = new InstructorRequest();
+        if (username != null) {
+            request.setUsername(username);
+        }
+        model.addAttribute("instructor", request);
+
+        if ("blank_fields".equals(error) || "bad_credentials".equals(error)) {
+            model.addAttribute("loginError", "Username or password is incorrect");
+        }
         return "instructor-pages/login";
     }
 
