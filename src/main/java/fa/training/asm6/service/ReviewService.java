@@ -22,7 +22,7 @@ public class ReviewService extends GenericServiceImpl<Review, Integer> {
         this.courseRepository = courseRepository;
     }
 
-    public Review saveReview(ReviewRequest reviewRequest){
+    public void saveReview(ReviewRequest reviewRequest){
         Course course = courseRepository.findById(reviewRequest.getCourseId())
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + reviewRequest.getCourseId()));
         Review review = Review.builder()
@@ -30,10 +30,10 @@ public class ReviewService extends GenericServiceImpl<Review, Integer> {
                 .email(reviewRequest.getEmail())
                 .content(reviewRequest.getContent())
                 .rating(reviewRequest.getRating())
-                .status(reviewRequest.getStatus())
+                .status(1)
                 .course(course)
                 .build();
-        return super.save(review);
+        super.save(review);
     }
 
     public List<Review> findMostRecentReviews(int offset, int limit){

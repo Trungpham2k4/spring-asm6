@@ -9,19 +9,7 @@
 </head>
 <body>
 
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
-        <a class="nav-link" th:href="@{/course/manage-course}">Manage Courses</a>
-        <a class="nav-link" th:href="@{/review/management}">Reviews</a>
-        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
-            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
-                Logout
-            </button>
-        </form>
-    </div>
-</div>
+<div th:replace="~{fragments/instructor-navbar :: instructor-navbar}"></div>
 
 <main class="container p-3">
     <h2>Pending Reviews</h2>
@@ -35,12 +23,10 @@
         </span>
         <p th:text="${pending.content}"></p>
         <div class="d-flex gap-2">
-            <form th:action="@{/review/approve}" method="post">
-                <input type="hidden" name="reviewId" th:value="${pending.id}">
+            <form th:action="@{/instructor/reviews/{id}/approve(id=${pending.id})}" th:method="patch">
                 <button type="submit" class="btn btn-success">Approve</button>
             </form>
-            <form th:action="@{/review/reject}" method="post">
-                <input type="hidden" name="reviewId" th:value="${pending.id}">
+            <form th:action="@{/instructor/reviews/{id}(id=${pending.id})}" th:method="delete">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </div>
@@ -57,8 +43,7 @@
         </span>
         <p th:text="${approve.content}"></p>
         <div class="d-flex gap-2">
-            <form th:action="@{/review/reject}" method="post">
-                <input type="hidden" name="reviewId" th:value="${approve.id}">
+            <form th:action="@{/instructor/reviews/{id}(id=${approve.id})}" th:method="delete">
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </div>

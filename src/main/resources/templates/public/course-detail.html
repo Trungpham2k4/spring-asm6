@@ -9,15 +9,7 @@
 </head>
 <body>
 <!-- Navbar-->
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/course}">Home</a>
-        <a class="nav-link" th:href="@{/category}">Categories</a>
-        <a class="nav-link" th:href="@{/review}">Recent Reviews</a>
-        <a class="nav-link" th:href="@{/instructor/login}">Login</a>
-    </div>
-</div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <!--Main Content-->
 
 <main class="container p-3" th:with="course=${courseDetailResponse.course}">
@@ -49,21 +41,25 @@
 
     <h3>Add Your Review</h3>
     <!-- form bắt buộc dùng th:object, k dùng th:with   -->
-    <form th:action="@{/review}" th:object="${reviewRequest}" method="post">
+    <form th:action="@{/reviews}" th:object="${reviewRequest}" method="post" novalidate>
 
         <input type="hidden" id="courseId" name="courseId" th:value="${course.id}">
-        <input type="hidden" id="status" name="status" th:value="1">
         <div class="mb-3">
             <label for="authorName" class="form-label">Your Name</label>
-            <input type="text" class="form-control" id="authorName" name="authorName" th:field="*{authorName}" required>
+            <input type="text" class="form-control" id="authorName" name="authorName"
+                   th:field="*{authorName}" th:classappend="${#fields.hasErrors('authorName') ? 'is-invalid' : ''}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}"></div>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" th:field="*{email}" required>
+            <input type="email" class="form-control" id="email" name="email"
+                   th:field="*{email}" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}" required>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div class="mb-3">
             <label for="rating" class="form-label">Rating</label>
-            <select class="form-select" id="rating" name="rating" th:field="*{rating}" required>
+            <select class="form-select" id="rating" name="rating"
+                    th:field="*{rating}" th:classappend="${#fields.hasErrors('rating') ? 'is-invalid' : ''}" required>
                 <option value="" disabled selected>Select your rating</option>
                 <option value="1">&starf;</option>
                 <option value="2">&starf; &starf;</option>
@@ -71,10 +67,13 @@
                 <option value="4">&starf; &starf; &starf; &starf;</option>
                 <option value="5">&starf; &starf; &starf; &starf; &starf;</option>
             </select>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></div>
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Review Content</label>
-            <textarea class="form-control" id="content" name="content" rows="3" th:field="*{content}" required></textarea>
+            <textarea class="form-control" id="content" name="content" rows="3"
+                      th:field="*{content}" th:classappend="${#fields.hasErrors('content') ? 'is-invalid' : ''}"  required></textarea>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
         </div>
 
         <button type="submit" class="btn btn-primary">Submit Review</button>

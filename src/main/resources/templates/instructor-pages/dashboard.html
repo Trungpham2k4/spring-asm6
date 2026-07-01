@@ -9,20 +9,7 @@
 </head>
 <body>
 
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
-        <a class="nav-link" th:href="@{/course/manage-course}">Manage Courses</a>
-        <a class="nav-link" th:href="@{/review/management}">Reviews</a>
-        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
-            <!-- Dùng onsubmit để xóa sạch các dữ liệu rác (nếu có) trên trình duyệt -->
-            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
-                Logout
-            </button>
-        </form>
-    </div>
-</div>
+<div th:replace="~{fragments/instructor-navbar :: instructor-navbar}"></div>
 
 <main class="container p-3">
     <h2>Dashboard Overview</h2>
@@ -58,17 +45,17 @@
     <div class="grid">
         <div class="row g-3">
             <div class="col-4">
-                <a th:href="@{/course/add}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                <a th:href="@{/instructor/courses/new}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
                     Create New Course
                 </a>
             </div>
             <div class="col-4">
-                <a th:href="@{/course/manage-course}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                <a th:href="@{/instructor/courses}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
                     Manage Courses
                 </a>
             </div>
             <div class="col-4">
-                <a th:href="@{/review/management}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
+                <a th:href="@{/instructor/reviews}" class="btn btn-outline-primary p-lg-5 d-flex align-items-center justify-content-center">
                     Pending Reviews
                 </a>
             </div>

@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -16,13 +15,12 @@ public class SecurityConfig {
 
     private final String[] whitelist = new String[] {
             "/css/**", "/static/**", "/js/**", "/images/**", "/fonts/**",
-            "/category", "/instructor/login", "/review", "/course", "/webjars/**", "/course/"
+            "/categories/**", "/instructor/login", "/reviews/**", "/courses/**", "/webjars/**"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(RegexRequestMatcher.regexMatcher("^/course/\\d+$")).permitAll()
                 .requestMatchers(whitelist).permitAll()
                 .anyRequest().authenticated()
         );
@@ -36,7 +34,7 @@ public class SecurityConfig {
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/course")
+                .logoutSuccessUrl("/courses")
                 .permitAll()
         );
         http.headers(header ->

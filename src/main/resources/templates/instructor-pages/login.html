@@ -9,28 +9,23 @@
 </head>
 <body>
 
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/course}">Home</a>
-        <a class="nav-link" th:href="@{/category}">Categories</a>
-        <a class="nav-link" th:href="@{/review}">Recent Reviews</a>
-        <a class="nav-link" th:href="@{/instructor}">Login</a>
-    </div>
-</div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <main class="container p-3 d-flex justify-content-center align-items-center">
 
     <div class="w-50 h-50 bg-white rounded p-3 shadow-lg">
         <h2 class="text-center">Instructor Login</h2>
-        <form th:action="@{/instructor/login}" th:object="${instructor}" method="post">
+        <form th:action="@{/instructor/login}" method="post">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                Invalid username or password.
+            </div>
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Enter username">
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>

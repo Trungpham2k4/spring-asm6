@@ -5,40 +5,24 @@ import lombok.Data;
 
 @Data
 public class ReviewRequest {
-    @NotNull
+    @NotNull(message = "Course ID cannot be null")
     Integer courseId;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Author name cannot be null")
+    @NotBlank(message = "Author name cannot be blank")
     String authorName;
 
-    @NotNull
-    @Email
+    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Email should be valid")
     String email;
 
-    @NotNull
-    @Min(1)
-    @Max(5)
+    @NotNull(message = "Rating cannot be null")
+    @Min(value = 1, message = "Rating must be at least 1")
+    @Max(value = 5, message = "Rating must be at most 5")
     Integer rating;
 
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Content cannot be null")
+    @NotBlank(message = "Content cannot be blank")
     String content;
-
-    @NotNull
-    @Min(1)
-    @Max(2)
-    Integer status;
-
-    @Override
-    public String toString() {
-        return "ReviewRequest{" +
-                "courseId=" + courseId +
-                ", authorName='" + authorName + '\'' +
-                ", email='" + email + '\'' +
-                ", rating=" + rating +
-                ", content='" + content + '\'' +
-                ", status=" + status +
-                '}';
-    }
 }

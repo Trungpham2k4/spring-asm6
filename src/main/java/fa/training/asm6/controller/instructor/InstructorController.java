@@ -1,4 +1,4 @@
-package fa.training.asm6.controller;
+package fa.training.asm6.controller.instructor;
 
 import fa.training.asm6.dto.request.InstructorRequest;
 import fa.training.asm6.dto.response.InstructorDashboardResponse;

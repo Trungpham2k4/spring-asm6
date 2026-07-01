@@ -1,4 +1,4 @@
-package fa.training.asm6.controller;
+package fa.training.asm6.controller.publics;
 
 import fa.training.asm6.dto.response.CategoryPageResponse;
 import fa.training.asm6.entity.Category;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
-public class CategoryController {
+public class PublicCategoryController {
 
     private final CategoryService categoryService;
     private final CourseService courseService;
@@ -30,9 +30,11 @@ public class CategoryController {
         List<Category> categories = categoryService.findAll();
         Page<Course> courses = courseService.findCourseByCategoryName(name, page);
         CategoryPageResponse categoryPageResponse = new CategoryPageResponse(categories, courses);
+
         model.addAttribute("categoryPageResponse", categoryPageResponse);
         model.addAttribute("categoryName", name);
         model.addAttribute("currentPage", page);
+
         return "public/category";
     }
 }

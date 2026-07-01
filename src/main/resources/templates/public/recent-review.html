@@ -9,28 +9,20 @@
 </head>
 <body>
 <!-- Navbar-->
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/course}">Home</a>
-        <a class="nav-link" th:href="@{/category}">Categories</a>
-        <a class="nav-link" th:href="@{/review}">Recent Reviews</a>
-        <a class="nav-link" th:href="@{/instructor/login}">Login</a>
-    </div>
-</div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <!--Main Content-->
 
 <main class="container p-3">
     <h2>Most Recent Reviews</h2>
     <hr>
     <div class="border-4 border-start border-primary p-2 mb-3" th:each="review : ${reviews}">
-        <h4 th:text="*{review.course.title}"></h4>
-        <h5 th:text="*{review.authorName}"></h5>
+        <h4 th:text="${review.course.title}"></h4>
+        <h5 th:text="${review.authorName}"></h5>
         <span class="text-warning" th:each="i : ${#numbers.sequence(1,5)}">
             <span th:if="${i <= review.rating}">&starf;</span>
             <span th:if="${i > review.rating}">&star;</span>
         </span>
-        <p class="mb-0" th:text="*{review.content}"></p>
+        <p class="mb-0" th:text="${review.content}"></p>
     </div>
 
 </main>

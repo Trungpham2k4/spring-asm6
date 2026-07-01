@@ -7,6 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmxc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1 class="text-center">404 Not Found</h1>
+<div class="container text-center mt-5">
+    <h1 class="display-1 text-danger">404</h1>
+    <h2>Resource Not Found</h2>
+    <!-- In ra thông điệp chi tiết từ Exception -->
+    <p class="text-muted" th:text="${errorMessage}">Your resource cannot be found</p>
+
+    <a th:href="@{/courses}" class="btn btn-primary mt-3">Back to home page</a>
+</div>
 </body>
 </html>

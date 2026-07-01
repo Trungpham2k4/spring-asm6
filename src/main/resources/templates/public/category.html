@@ -9,15 +9,7 @@
 </head>
 <body>
 <!-- Navbar-->
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/course}">Home</a>
-        <a class="nav-link" th:href="@{/category}">Categories</a>
-        <a class="nav-link" th:href="@{/review}">Recent Reviews</a>
-        <a class="nav-link" th:href="@{/instructor/login}">Login</a>
-    </div>
-</div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <!--Main Content-->
 
 <main class="container p-3">
@@ -25,7 +17,7 @@
     <div class="bg-white rounded d-flex align-items-center justify-content-start p-3 mb-4 gap-2 flex-wrap">
         <div th:each="category : ${categoryPageResponse.categories}">
             <a class="text-decoration-none text-primary"
-               th:href="@{/category(name=${category.name})}"
+               th:href="@{/categories(name=${category.name})}"
                th:text="${category.name}"
             ></a>
         </div>
@@ -37,13 +29,13 @@
         <h3 th:text="${course.title}"></h3>
         <p th:text="${course.description}"></p>
 
-        <a class="btn btn-primary" th:href="@{/course/{id}(id=${course.id})}">View Course</a>
+        <a class="btn btn-primary" th:href="@{/courses/{id}(id=${course.id})}">View Course</a>
     </div>
 
     <nav th:if="${categoryPageResponse.courses.totalPages > 1}">
         <ul class="pagination">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/category(name=${categoryName},page=${currentPage - 1})}">Previous</a>
+                <a class="page-link" th:href="@{/categories(name=${categoryName},page=${currentPage - 1})}">Previous</a>
             </li>
 
             <!-- Vòng lặp in ra các số trang (1, 2, 3...) -->
@@ -52,13 +44,13 @@
                 th:each="i : ${#numbers.sequence(1, categoryPageResponse.courses.totalPages)}"
                 th:classappend="${i == currentPage} ? 'active'">
 
-                <a class="page-link" th:href="@{/category(name=${categoryName},page=${i})}" th:text="${i}">1</a>
+                <a class="page-link" th:href="@{/categories(name=${categoryName},page=${i})}" th:text="${i}">1</a>
             </li>
 
             <!-- Nút "Trang sau" (Next) -->
             <!-- Thêm class 'disabled' nếu đang ở trang cuối cùng -->
             <li class="page-item" th:classappend="${currentPage == categoryPageResponse.courses.totalPages} ? 'disabled'">
-                <a class="page-link" th:href="@{/category(name=${categoryName},page=${currentPage + 1})}">Next</a>
+                <a class="page-link" th:href="@{/categories(name=${categoryName},page=${currentPage + 1})}">Next</a>
             </li>
         </ul>
     </nav>

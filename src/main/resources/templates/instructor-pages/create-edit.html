@@ -9,53 +9,52 @@
 </head>
 <body>
 
-<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3">
-    <h5 class="text-white fw-bold m-0">CourseShare</h5>
-    <div class="nav text-gray">
-        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
-        <a class="nav-link" th:href="@{/course/manage-course}">Manage Courses</a>
-        <a class="nav-link" th:href="@{/review/management}">Reviews</a>
-        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
-            <!-- Dùng onsubmit để xóa sạch các dữ liệu rác (nếu có) trên trình duyệt -->
-            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
-                Logout
-            </button>
-        </form>
-    </div>
-</div>
+<div th:replace="~{fragments/instructor-navbar :: instructor-navbar}"></div>
 
 <main class="container p-3 d-flex justify-content-center align-items-center">
 
     <div class="bg-white w-75 rounded p-3 shadow-lg">
         <h2 th:text="${course.id == null ? 'Create New Course' : 'Edit Course'}"></h2>
-        <form th:action="@{/course/{action}(action=${course.id == null ? 'add' : 'edit' })}" th:object="${course}" method="post">
+        <form th:action="${course.id == null} ? '/instructor/courses' : '/instructor/courses/' + ${course.id}"
+              th:object="${course}"
+              th:method="${course.id == null ? 'post' : 'put'}">
             <input type="hidden" name="id" th:value="${course.id}">
             <input type="hidden" name="oldCategory" th:value="${course.oldCategory}">
 
             <div class="mb-3">
                 <label for="courseTitle" class="form-label">Course</label>
-                <input type="text" class="form-control" id="courseTitle" th:field="*{title}" placeholder="Enter course title">
+                <input type="text" class="form-control" id="courseTitle"
+                       th:field="*{title}" th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : ''}" placeholder="Enter course title">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Short description</label>
-                <textarea class="form-control" id="description" th:field="*{description}" placeholder="Write a brief summary"></textarea>
+                <textarea class="form-control" id="description"
+                          th:field="*{description}" th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}" placeholder="Write a brief summary"></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">Course Content (Markdown)</label>
-                <textarea class="form-control" id="content" th:field="*{content}" placeholder="# Markdown content here"></textarea>
+                <textarea class="form-control" id="content"
+                          th:field="*{content}" th:classappend="${#fields.hasErrors('content') ? 'is-invalid' : ''}" placeholder="# Markdown content here"></textarea>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></div>
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Categories (comma-separated)</label>
-                <input type="text" class="form-control" id="category" th:field="*{category}" th:placeholder="*{oldCategory}">
+                <input type="text" class="form-control" id="category"
+                       th:field="*{category}" th:classappend="${#fields.hasErrors('category') ? 'is-invalid' : ''}" th:placeholder="*{oldCategory}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
             </div>
             <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" th:field="*{status}">
+                <select class="form-select" id="status"
+                        th:field="*{status}" th:classappend="${#fields.hasErrors('status') ? 'is-invalid' : ''}">
                     <option selected disabled value="">Select Status</option>
                     <option value="1">Draft</option>
                     <option value="2">Published</option>
                     <option value="3">Archived</option>
                 </select>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
             </div>
             <button type="submit" class="btn w-25 btn-success">Save</button>
         </form>

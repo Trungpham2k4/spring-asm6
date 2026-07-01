@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="navbar bg-dark flex-box align-items-center justify-content-between p-3" th:fragment="instructor-navbar">
+    <h5 class="text-white fw-bold m-0">CourseShare</h5>
+    <div class="nav text-gray">
+        <a class="nav-link" th:href="@{/instructor/dashboard}">Dashboard</a>
+        <a class="nav-link" th:href="@{/instructor/courses}">Manage Courses</a>
+        <a class="nav-link" th:href="@{/instructor/reviews}">Reviews</a>
+        <form th:action="@{/instructor/logout}" method="post" style="display: inline;">
+            <!-- Dùng onsubmit để xóa sạch các dữ liệu rác (nếu có) trên trình duyệt -->
+            <button class="nav-link" type="submit" onclick="localStorage.clear(); sessionStorage.clear();">
+                Logout
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
