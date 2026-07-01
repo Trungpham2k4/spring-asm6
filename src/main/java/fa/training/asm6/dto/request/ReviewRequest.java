@@ -8,11 +8,9 @@ public class ReviewRequest {
     @NotNull(message = "Course ID cannot be null")
     Integer courseId;
 
-    @NotNull(message = "Author name cannot be null")
     @NotBlank(message = "Author name cannot be blank")
     String authorName;
 
-    @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be blank")
     @Email(message = "Email should be valid")
     String email;
@@ -22,7 +20,6 @@ public class ReviewRequest {
     @Max(value = 5, message = "Rating must be at most 5")
     Integer rating;
 
-    @NotNull(message = "Content cannot be null")
     @NotBlank(message = "Content cannot be blank")
     String content;
 }

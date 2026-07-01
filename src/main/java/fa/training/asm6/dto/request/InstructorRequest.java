@@ -6,6 +6,5 @@ import lombok.ToString;
 @Data
 public class InstructorRequest {
     String username;
-    @ToString.Exclude
     String password;
 }

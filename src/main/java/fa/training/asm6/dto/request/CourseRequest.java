@@ -9,15 +9,12 @@ public class CourseRequest {
     Integer id;
 
     @NotBlank
-    @NotNull
     String title;
 
     @NotBlank
-    @NotNull
     String description;
 
     @NotBlank
-    @NotNull
     String content;
 
     @Min(1)
